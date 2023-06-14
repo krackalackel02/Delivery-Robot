@@ -33,5 +33,32 @@ const roads = [
   
 	return graph;
   }
-
+  
+  class Robot {
+	constructor(size, graph) {
+	  this.deliveries = this.makeDeliveryList(size, graph);
+	  this.distance = 1;
+	}
+  
+	makeDeliveryList(size, graph) {
+	  let deliveries = {
+		list: [],
+		state: [],
+	  };
+	  const locations = Object.keys(graph);
+  
+	  for (let i = 0; i < size || deliveries.list.length < size; i++) {
+		let from = locations[Math.floor(Math.random() * locations.length)];
+		let to = locations[Math.floor(Math.random() * locations.length)];
+		if (from !== to) {
+		  deliveries.list.push([from, to]);
+		}
+	  }
+	  deliveries.state = deliveries.list.map(() => "undelivered");
+	  return deliveries;
+	}
+  }
+  
   const roadGraph = buildGraph(roads);
+  let robot1 = new Robot(1, roadGraph);
+  console.log(robot1);
