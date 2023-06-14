@@ -42,17 +42,17 @@ function buildGraph(edges) {
 // Robot class for managing deliveries
 class Robot {
 	constructor(size, graph) {
+		this.map = graph;
 		this.deliveries = this.makeDeliveryList(size, graph);
-		this.distance = 1;
 	}
 
 	// Generate a list of random deliveries
-	makeDeliveryList(size, graph) {
+	makeDeliveryList(size) {
 		let deliveries = {
 			list: [],
 			state: [],
 		};
-		const locations = Object.keys(graph);
+		const locations = Object.keys(this.map);
 
 		for (let i = 0; i < size || deliveries.list.length < size; i++) {
 			let from = locations[Math.floor(Math.random() * locations.length)];
@@ -63,6 +63,14 @@ class Robot {
 		}
 		deliveries.state = deliveries.list.map(() => "undelivered");
 		return deliveries;
+	}
+
+	makeDeliveries() {
+		let count = 0;
+		for (const delivery of this.deliveries.list) {
+			this.deliveries.state[count] = Dijkstra(delivery, this.map);
+			count++;
+		}
 	}
 }
 
@@ -132,3 +140,7 @@ function Dijkstra(delivery, roadGraph) {
 let delivery = ["Shop", "Alice's House"];
 let result = Dijkstra(delivery, roadGraph);
 console.log(result);
+
+robot1.makeDeliveries();
+console.log(robot1.map);
+console.log(robot1);
